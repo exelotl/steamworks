@@ -3,11 +3,11 @@
 import os
 
 type
-  ISteamApps = distinct pointer
-  ISteamUser = distinct pointer
-  ISteamFriends = distinct pointer
-  ISteamUserStats = distinct pointer
-  ISteamUtils = distinct pointer
+  ISteamApps* = distinct pointer
+  ISteamUser* = distinct pointer
+  ISteamFriends* = distinct pointer
+  ISteamUserStats* = distinct pointer
+  ISteamUtils* = distinct pointer
 
   SteamAPICall = distinct uint64
 
@@ -38,11 +38,18 @@ type
     success: uint8 # Was the call successful? Returns 1 if it was; otherwise, 0 on failure.
     players: int32 # Number of players currently playing.
 
+proc isNil*(a: ISteamApps): bool {.borrow.}
+proc isNil*(a: ISteamUser): bool {.borrow.}
+proc isNil*(a: ISteamFriends): bool {.borrow.}
+proc isNil*(a: ISteamUserStats): bool {.borrow.}
+proc isNil*(a: ISteamUtils): bool {.borrow.}
+
 {.push stdcall, dynlib: "steam_api64".}
 
 proc RestartAppIfNecessary*(ownAppID: AppId): bool {.importc: "SteamAPI_RestartAppIfNecessary".}
-proc InitFlat*(): InitResult {.importc: "SteamAPI_InitFlat".}
+proc InitFlat*(pOutErrMsg: pointer = nil): InitResult {.importc: "SteamAPI_InitFlat".}
 proc RunCallbacks*() {.importc: "SteamAPI_RunCallbacks".}
+proc Shutdown*() {.importc: "SteamAPI_Shutdown".}
 
 proc SteamApps*(): ISteamApps {.importc: "SteamAPI_SteamApps_v008".}
 proc isDlcInstalled*(self: ISteamApps, appID: AppId): bool {.importc: "SteamAPI_ISteamApps_BIsDlcInstalled".}
