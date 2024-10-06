@@ -67,6 +67,18 @@ proc getSteamID*(self: ISteamUser): SteamId {.importc: "SteamAPI_ISteamUser_GetS
 
 proc SteamUserStats*(): ISteamUserStats {.importc: "SteamAPI_SteamUserStats_v012".}
 proc getNumberOfCurrentPlayers*(self: ISteamUserStats): SteamAPICall {.importc: "SteamAPI_ISteamUserStats_GetNumberOfCurrentPlayers".}
+proc requestCurrentStats*(self: ISteamUserStats): bool {.importc: "SteamAPI_ISteamUserStats_RequestCurrentStats".}
+proc getStatInt32*(self: ISteamUserStats, pchName: cstring, pData: ptr int32): bool {.importc: "SteamAPI_ISteamUserStats_GetStatInt32".}
+proc getStatFloat*(self: ISteamUserStats, pchName: cstring, pData: ptr float32): bool {.importc: "SteamAPI_ISteamUserStats_GetStatFloat".}
+proc setStatInt32*(self: ISteamUserStats, pchName: cstring, nData: int32): bool {.importc: "SteamAPI_ISteamUserStats_SetStatInt32".}
+proc setStatFloat*(self: ISteamUserStats, pchName: cstring, fData: float32): bool {.importc: "SteamAPI_ISteamUserStats_SetStatFloat".}
+proc updateAvgRateStat*(self: ISteamUserStats, pchName: cstring, flCountThisSession: float32, dSessionLength: float64): bool {.importc: "SteamAPI_ISteamUserStats_UpdateAvgRateStat".}
+proc getAchievement*(self: ISteamUserStats, pchName: cstring, pbAchieved: ptr bool): bool {.importc: "SteamAPI_ISteamUserStats_GetAchievement".}
+proc setAchievement*(self: ISteamUserStats, pchName: cstring): bool {.importc: "SteamAPI_ISteamUserStats_SetAchievement".}
+proc clearAchievement*(self: ISteamUserStats, pchName: cstring): bool {.importc: "SteamAPI_ISteamUserStats_ClearAchievement".}
+proc getAchievementAndUnlockTime*(self: ISteamUserStats, pchName: cstring, pbAchieved: ptr bool, punUnlockTime: ptr uint32): bool {.importc: "SteamAPI_ISteamUserStats_GetAchievementAndUnlockTime".}
+proc storeStats*(self: ISteamUserStats): bool {.importc: "SteamAPI_ISteamUserStats_StoreStats".}
+proc resetAllStats*(self: ISteamUserStats, bAchievementsToo: bool): bool {.importc: "SteamAPI_ISteamUserStats_ResetAllStats".}
 
 proc SteamFriends*(): ISteamFriends {.importc: "SteamAPI_SteamFriends_v017".}
 proc getPersonaName*(self: ISteamFriends): cstring {.importc: "SteamAPI_ISteamFriends_GetPersonaName".}
@@ -80,6 +92,7 @@ proc SteamUtils*(): ISteamUtils {.importc: "SteamAPI_SteamUtils_v010".}
 proc getAPICallResult*(self: ISteamUtils, steamAPICall: SteamAPICall, data: pointer, dataSize: cint, callbackExpected: cint, failed: ptr[bool]): bool {.importc: "SteamAPI_ISteamUtils_GetAPICallResult".}
 proc isAPICallCompleted*(self: ISteamUtils, steamAPICall: SteamAPICall, failed: ptr[bool]): bool {.importc: "SteamAPI_ISteamUtils_IsAPICallCompleted".}
 proc getAPICallFailureReason*(self: ISteamUtils, steamAPICall: SteamAPICall): cint  {.importc: "SteamAPI_ISteamUtils_GetAPICallFailureReason".}
+
 {.pop.}
 
 proc zeroCap(s: var string) =
