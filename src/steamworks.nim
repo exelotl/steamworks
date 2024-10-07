@@ -44,7 +44,12 @@ proc isNil*(a: ISteamFriends): bool {.borrow.}
 proc isNil*(a: ISteamUserStats): bool {.borrow.}
 proc isNil*(a: ISteamUtils): bool {.borrow.}
 
-{.push stdcall, dynlib: "steam_api64".}
+const soName = 
+  when defined(windows): "steam_api64"
+  elif defined(macosx): "libsteam_api.dylib"
+  else: "libsteam_api.so"
+
+{.push stdcall, dynlib: soname.}
 
 proc RestartAppIfNecessary*(ownAppID: AppId): bool {.importc: "SteamAPI_RestartAppIfNecessary".}
 proc InitFlat*(pOutErrMsg: pointer = nil): InitResult {.importc: "SteamAPI_InitFlat".}
